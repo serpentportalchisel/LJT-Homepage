@@ -18,7 +18,19 @@ jobs:
         run: bundle exec jekyll build
         env:
           JEKYLL_ENV: production
-      - name: List built pages
+      - name: Verify rendered content
         run: |
-          test -d _site
-          find _site -maxdepth 2 -type f | sort | sed -n '1,120p'
+          set -e
+          echo '== About page (_site/index.html) =='
+          for t in "Junteng Liu" "SynLogic" "Perception Bottleneck" "Universal Truthfulness Hyperplane" "In-Context Sharpness" "C-Eval" "Composing Parameter-Efficient"; do grep -q "$t" _site/index.html && echo "about OK: $t" || { echo "about MISSING: $t"; exit 1; }; done
+          for t in "jliugi@connect.ust.hk" "Vicent0205" "tbK9jl4AAAAJ" "junteng88716710" "MINIMAX" "Tencent WXG" "Shanghai AI Lab" "Zhiyuan Honor Scholarship" "LLM Reasoning and Reinforcement Learning" "Hallucination in Vision-Language Models" "LLM Truthfulness and Interpretability" "Professor Junxian He" "Zifei Shan" "Yu Cheng"; do grep -q "$t" _site/index.html && echo "about OK: $t" || { echo "about MISSING: $t"; exit 1; }; done
+          echo '== Publications index (_site/publications/index.html) =='
+          for t in "SynLogic" "Perception Bottleneck" "Universal Truthfulness Hyperplane" "In-Context Sharpness" "C-Eval" "Composing Parameter-Efficient" "EMNLP 2024" "ICML 2024" "NeurIPS 2023" "arXiv"; do grep -q "$t" _site/publications/index.html && echo "pubs OK: $t" || { echo "pubs MISSING: $t"; exit 1; }; done
+          echo '== Individual publication pages =='
+          for f in synlogic perception-bottleneck-vlms-chart-understanding universal-truthfulness-hyperplane in-context-sharpness-alerts c-eval composing-parameter-efficient-modules; do test -f "_site/publication/$f.html" && echo "page OK: $f" || { echo "page MISSING: $f"; exit 1; }; done
+          echo '== Template demo content must be absent =='
+          if grep -Rq "Paper Title Number" _site/; then echo "DEMO PUBLICATIONS PRESENT"; exit 1; else echo "no demo publications"; fi
+          if grep -Rq "Red Brick University" _site/; then echo "DEMO PROFILE PRESENT"; exit 1; else echo "no demo profile"; fi
+          if grep -Rq "Version Control Theory" _site/; then echo "DEMO CV PRESENT"; exit 1; else echo "no demo cv"; fi
+          if grep -Rq "Short biography for the left-hand sidebar" _site/; then echo "DEMO BIO PRESENT"; exit 1; else echo "no demo bio"; fi
+          echo 'ALL CHECKS PASSED'
