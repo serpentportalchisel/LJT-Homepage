@@ -48,15 +48,16 @@ analytics:
 include:
   - .htaccess
   - _pages
-  - files
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
   - .asset-cache
   - .bundle
+  - .devcontainer
   - .github
   - .jekyll-assets-cache
   - .sass-cache
+  - _drafts
   - assets/js/_main.js
   - assets/js/plugins
   - assets/js/vendor
@@ -64,6 +65,7 @@ exclude:
   - Capfile
   - config
   - Dockerfile
+  - docker-compose.yaml
   - Gemfile
   - Gruntfile.js
   - gulpfile.js
@@ -74,6 +76,14 @@ exclude:
   - package.json*
   - Rakefile
   - README
+  - README.md
+  - AGENTS.md
+  - markdown_generator
+  - scripts
+  - talkmap
+  - talkmap.ipynb
+  - talkmap.py
+  - talkmap_out.ipynb
   - tmp
   - vendor
 keep_files:
